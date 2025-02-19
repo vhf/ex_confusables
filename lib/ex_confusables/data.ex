@@ -1,11 +1,8 @@
 defmodule ExConfusables.Data do
   @moduledoc false
 
-  @confusables_txt_url 'https://www.unicode.org/Public/security/latest/confusables.txt'
-
   def get() do
-    {:ok, {{_, 200, _}, _headers, body}} = :httpc.request(@confusables_txt_url)
-    bin = :erlang.iolist_to_binary(body)
+    bin = File.read!(Path.join([:code.priv_dir(:ex_confusables), "confusables.txt"]))
     process(bin)
   end
 

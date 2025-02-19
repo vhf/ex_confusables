@@ -1,14 +1,15 @@
 alias ExConfusables.Data
 
-confusables_string = Data.get()
-|> Enum.shuffle()
-|> Enum.reduce(
-  "",
-  fn ({char, _}, acc) ->
-    char = String.to_integer(char, 16)
-    <<acc::binary, char::utf8>>
-  end
-)
+confusables_string =
+  Data.get()
+  |> Enum.shuffle()
+  |> Enum.reduce(
+    "",
+    fn {char, _}, acc ->
+      char = String.to_integer(char, 16)
+      <<acc::binary, char::utf8>>
+    end
+  )
 
 Benchee.run(
   %{
