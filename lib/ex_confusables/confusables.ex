@@ -2,8 +2,6 @@ defmodule ExConfusables.Confusables do
   @moduledoc false
 
   alias ExConfusables.Data
-  Application.ensure_all_started(:ssl)
-  :inets.start()
   confusables_list = Data.get()
 
   for {key, value} <- confusables_list do
@@ -20,11 +18,12 @@ defmodule ExConfusables.Confusables do
           "[" <> target <> "]"
       end
 
-    Module.eval_quoted(
-      __MODULE__,
+    Code.eval_quoted(
       Code.string_to_quoted("""
         def prototype(0x#{key}), do: #{target}
-      """)
+      """),
+      [],
+      __ENV__
     )
   end
 
